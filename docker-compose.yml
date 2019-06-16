@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  jupylab:
+    image: "gabedotpy/dataanalysis-jupyterlab:latest"
+    ports:
+      - "9999:9999"
+    volumes:
+      - <path-to-where-your-notebooks-live>:/Notebooks
+      - <path-to-where-your-data-lives>:/DataDrive
