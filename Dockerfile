@@ -28,13 +28,21 @@ RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/re
 # Configure environment
 ENV MINICONDA_VER="4.6.14" \
     MINICONDA_MD5_SUM="718259965f234088d785cad1fbd7de03" \
-    CONDA_DIR="/opt/conda"
+    CONDA_DIR="/opt/conda" \
+    CONTAINER_USER="jupylab"
 
 ENV PATH="$CONDA_DIR/bin:$PATH" \
     LC_ALL="en_US.UTF-8" \
     LANG="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8" \
     MINICONDA_URL="https://repo.continuum.io/miniconda/Miniconda3-$MINICONDA_VER-Linux-x86_64.sh"
+
+# Create user with UID=1000 and in the 'users' group
+RUN adduser -s /bin/bash -u 1000 -D $CONTAINER_USER && \
+    mkdir -p /opt/conda && \
+    chown $CONTAINER_USER /opt/conda
+
+USER $CONTAINER_USER
 
 # Install conda
 RUN cd /tmp && \
@@ -50,19 +58,14 @@ RUN conda upgrade -y pip && \
     conda clean --all
 
 # install data analysis packages    
-RUN conda install -y -c conda-forge \
+RUN conda install -y \
         jupyterlab \
         numpy \
         pandas \
-        scipy \
-        matplotlib \
-        ipywidgets
+        matplotlib 
 
-# copying over the jupyter lab configuration
-COPY ./jupylab_config.py /jupylab_config.py
-
-# setting up working dir and port exposure
+# final setups and default command
 WORKDIR /Notebooks
-EXPOSE 9999
-
-CMD jupyter lab --config=/jupylab_config.py
+EXPOSE 8888
+CMD jupyter lab --config=/jupyter_notebook_config.py
+COPY ./jupylab_config.py /jupyter_notebook_config.py
