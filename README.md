@@ -1,17 +1,12 @@
 # Data Analysis - Jupyter Lab
 Jupyterlab (with Miniconda) server installation on Alpine Linux container.
 
-The image size is a bit hefty (1.75 GB) so it will take a few minutes to download.
+The image size is a bit hefty (1.63 GB) so it will take a few minutes to download.
 
 **BEWARE**:
-This is supposed to be a **DEMO** image, quickly showing the capabilites and flexibility of Jupyter Lab as a server so:
-- As default the instance will run as a server listening to **all IPs**, so anyone in the same network can connect to it by knowing the IP of the machine running it.
-- The image is setup to run as root so that extra libraries can easily be installed on the fly.
+This is supposed to be a **DEMO** image, quickly showing the capabilites and flexibility of Jupyter Lab as a server so as default the instance will run as a server (listening to all IPs) and no password. This means that anyone in the same network can connect to it by knowing the IP and port of the machine running it.
 
-For production you will **definitely** want to add security measures by editing the dockerfile and rebuilding the last few layers. Starting with the info here: https://jupyter-notebook.readthedocs.io/en/stable/public_server.html
-
-*Inspired by*: https://github.com/datarevenue-berlin/alpine-miniconda
-
+For production you will **definitely** want to add security measures. Starting with the information [here](https://jupyter-notebook.readthedocs.io/en/stable/public_server.html).
 
 # Basic Usage
 You can run a throw-away container with this command (add the path of where you want your notebook to be saved):
@@ -39,3 +34,5 @@ To run it, navigate to the folder where you edited file is and run:
 ```
 docker-compose up
 ```
+
+This image is a modified version of https://github.com/datarevenue-berlin/alpine-miniconda.
